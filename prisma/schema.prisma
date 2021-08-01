@@ -1,0 +1,22 @@
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Persons { // ถ้าจาก db คือ person สร้างไว้เฉยๆ ตัวเดียวโดดๆ
+    PersonId Int      @id
+    Fname    String
+    Lname    String
+    Orders   Orders[] // หมายถึงว่าจะมีคนมาดึงในนี้นะ
+}
+
+model Orders { // order ไปเอา fk ของ persons มา
+    OrderId     Int     @id
+    OrderNumber Int
+    Person      Persons @relation(fields: [personId], references: [PersonId]) // สร้างตัวแปรมาตัวนึงควรจะเป็นชื่อ table
+    personId    Int
+}
